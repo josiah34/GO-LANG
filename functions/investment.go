@@ -7,6 +7,9 @@ import (
 	"math"
 )
 
+// adding variable declaration at top level scope of the go file so it canbe accessed by all functions
+const inflationRate float64 = 2.5
+
 func main() {
 	//explicit type declaration
 	// var investAmount, years float64 = 1000, 10
@@ -15,8 +18,6 @@ func main() {
 
 	// one liner assignment
 	//investmentAmount, years, expectedReturnRate := 1000.0, 10.0, 5.5
-
-	const inflationRate float64 = 2.5
 	var investmentAmount float64
 	var years float64
 	var expectedReturnRate float64
@@ -30,8 +31,8 @@ func main() {
 	fmt.Print("Years Investing: ")
 	fmt.Scan(&years)
 
-	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
-	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
+	futureValue := calculatFutureValue(investmentAmount, years, expectedReturnRate)
+	futureRealValue := calculateRealValue(futureValue, years)
 
 	formattedFV := fmt.Sprintf("Future Value: %.2f\nFuture Value (adjusted for inflation): %.2f", futureValue, futureRealValue)
 
@@ -41,4 +42,29 @@ func main() {
 
 	fmt.Print(formattedFV)
 
+	// outputTxt("Hello, World!")
+
+}
+
+// outputTxt is a function which outputs the string passed to it
+func outputTxt(text string) {
+	fmt.Print(string(text))
+}
+
+// return types must be explicitly declared in functions
+
+func calculatFutureValue(investmentAmount float64, years float64, expectedReturnRate float64) float64 {
+	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
+	return futureValue
+}
+
+func calculateRealValue(futurevalue float64, years float64) float64 {
+	return futurevalue / math.Pow(1+inflationRate/100, years)
+}
+
+// calculateRealValueAlt calculates the real value of an investment after a specified number of years,
+// taking into account a constant inflation rate. It returns the inflation-adjusted future value.
+func calculateRealValueAlt(futurevalue float64, years float64) (rv float64) {
+	rv = futurevalue / math.Pow(1+inflationRate/100, years)
+	return 
 }
